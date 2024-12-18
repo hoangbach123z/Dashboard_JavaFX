@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane fx:id="borderPane" prefHeight="667.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bachnh.dashboard_javafx.controller.EmployeesController">
+   <top>
+      <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="992.0" BorderPane.alignment="CENTER">
+         <children>
+            <MFXButton fx:id="addEmployeeBtn" prefHeight="41.0" prefWidth="105.0" rippleColor="WHITE" style="-fx-background-color:  #008001; -fx-font-family: Open Sans Bold; -fx-text-fill: #ffffff; -fx-font-weight: bold;" text="Thêm mới" textFill="#fcfafa">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <graphic>
+                  <FontIcon iconColor="WHITE" iconLiteral="fas-plus" />
+               </graphic>
+            </MFXButton>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <TableView fx:id="paginated" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="623.0" prefWidth="1024.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

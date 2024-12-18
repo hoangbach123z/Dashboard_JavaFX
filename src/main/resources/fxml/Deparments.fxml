@@ -1,14 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<!--
+  ~ Copyright (C) 2022 Parisi Alessandro
+  ~ This file is part of MaterialFX (https://github.com/palexdev/MaterialFX).
+  ~
+  ~ MaterialFX is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Lesser General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ MaterialFX is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Lesser General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Lesser General Public License
+  ~ along with MaterialFX.  If not, see <http://www.gnu.org/licenses/>.
+  -->
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.bachnh.dashboard_javafx.controller.DepartmentController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXTableView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
 
-</AnchorPane>
+
+<BorderPane prefHeight="667.0" prefWidth="1026.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bachnh.dashboard_javafx.controller.DepartmentController">
+   <center>
+       <MFXTableView fx:id="table" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+   </center>
+   <top>
+       <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="992.0" BorderPane.alignment="CENTER">
+           <children>
+               <MFXButton fx:id="addDepartmentBtn" prefHeight="41.0" prefWidth="105.0" rippleColor="WHITE" style="-fx-background-color: #008001; -fx-font-family: Open Sans Bold; -fx-text-fill: #ffffff; -fx-font-weight: bold;" text="Thêm mới" textFill="#fcfafa">
+                   <HBox.margin>
+                       <Insets />
+                   </HBox.margin>
+                   <graphic>
+                       <FontIcon iconColor="WHITE" iconLiteral="fas-plus" />
+                   </graphic>
+               </MFXButton>
+           </children>
+       </HBox>
+   </top>
+</BorderPane>

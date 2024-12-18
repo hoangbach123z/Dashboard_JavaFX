@@ -2,18 +2,18 @@ package com.bachnh.dashboard_javafx.controller;
 
 import com.bachnh.dashboard_javafx.model.Device;
 import com.bachnh.dashboard_javafx.model.Model;
-import com.bachnh.dashboard_javafx.model.Person;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.materialfx.controls.MFXPaginatedTableView;
 import io.github.palexdev.materialfx.controls.MFXTableColumn;
-import io.github.palexdev.materialfx.controls.MFXTableView;
 import io.github.palexdev.materialfx.controls.cell.MFXTableRowCell;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialog;
 import io.github.palexdev.materialfx.dialogs.MFXGenericDialogBuilder;
 import io.github.palexdev.materialfx.dialogs.MFXStageDialog;
 import io.github.palexdev.materialfx.enums.ScrimPriority;
+import io.github.palexdev.materialfx.filter.EnumFilter;
 import io.github.palexdev.materialfx.filter.IntegerFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
+import io.github.palexdev.materialfx.utils.others.observables.When;
 import io.github.palexdev.mfxresources.fonts.MFXFontIcon;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,44 +37,46 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DepartmentController implements Initializable {
+public class AccessControlController implements Initializable {
     @FXML
     private MFXPaginatedTableView<Device> paginated;
     @FXML
-    private MFXTableView<Person> table;
-    @FXML
     private GridPane gridPane;
     @FXML
-    private MFXButton addDepartmentBtn;
+    private MFXButton scanQrBtn;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        setupPaginated();
+        setupPaginated();
 
-//        paginated.autosizeColumnsOnInitialization();
-//        When.onChanged(paginated.currentPageProperty())
-//                .then((oldValue, newValue) -> paginated.autosizeColumns())
-//                .listen();
-        setupTable();
-        table.autosizeColumnsOnInitialization();
+        paginated.autosizeColumnsOnInitialization();
+        When.onChanged(paginated.currentPageProperty())
+                .then((oldValue, newValue) -> paginated.autosizeColumns())
+                .listen();
+
     }
-    private void setupTable() {
-        MFXTableColumn<Person> nameColumn = new MFXTableColumn<>("Name", true, Comparator.comparing(Person::getName));
-        MFXTableColumn<Person> surnameColumn = new MFXTableColumn<>("Surname", true, Comparator.comparing(Person::getSurname));
-        MFXTableColumn<Person> ageColumn = new MFXTableColumn<>("Age", true, Comparator.comparing(Person::getAge));
+    private void setupPaginated() {
+        // Khởi tạo các cột bảng
+        MFXTableColumn<Device> idColumn = new MFXTableColumn<>("ID", false, Comparator.comparing(Device::getID));
+        MFXTableColumn<Device> nameColumn = new MFXTableColumn<>("Name", false, Comparator.comparing(Device::getName));
+        MFXTableColumn<Device> ipColumn = new MFXTableColumn<>("IP", false, Comparator.comparing(Device::getIP));
+        MFXTableColumn<Device> ownerColumn = new MFXTableColumn<>("Owner", false, Comparator.comparing(Device::getOwner));
+        MFXTableColumn<Device> stateColumn = new MFXTableColumn<>("State", false, Comparator.comparing(Device::getState));
 
-        nameColumn.setRowCellFactory(person -> new MFXTableRowCell<>(Person::getName));
-        surnameColumn.setRowCellFactory(person -> new MFXTableRowCell<>(Person::getSurname));
-        ageColumn.setRowCellFactory(person -> new MFXTableRowCell<>(Person::getAge) {{
+        idColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Device::getID));
+        nameColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Device::getName));
+        ipColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Device::getIP) {{
             setAlignment(Pos.CENTER_RIGHT);
         }});
-        ageColumn.setAlignment(Pos.CENTER_RIGHT);
+        ownerColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Device::getOwner));
+        stateColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Device::getState));
+
         // Thêm cột hành động
-        MFXTableColumn<Person> actionColumn = new MFXTableColumn<>("", false);
-        actionColumn.setRowCellFactory(person -> {
-            return new MFXTableRowCell<>(person1 -> "") {
+        MFXTableColumn<Device> actionColumn = new MFXTableColumn<>("", false);
+        actionColumn.setRowCellFactory(device -> {
+            return new MFXTableRowCell<>(device1 -> "") {
                 private HBox actionBox;
                 @Override
-                public void update(Person item) {
+                public void update(Device item) {
                     super.update(item);
                     if (item == null) {
                         setGraphic(null);
@@ -84,13 +86,32 @@ public class DepartmentController implements Initializable {
                         actionBox = new HBox(10);
                         actionBox.setAlignment(Pos.CENTER);
 
+                        // Tạo icon Xem
+                        MFXFontIcon viewIcon = new MFXFontIcon("fas-eye", 24);
+                        viewIcon.setStyle("-fx-cursor: hand;");
+                        viewIcon.setColor(Color.FORESTGREEN);
+                        viewIcon.setOnMouseClicked(event -> {
+                            FXMLLoader loader = new FXMLLoader ();
+                            loader.setLocation(getClass().getResource("/fxml/EmployeeDetail.fxml"));
+                            try {
+                                loader.load();
+                            } catch (IOException ex) {
+                                Logger.getLogger(EditEmployeeController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            Parent parent = loader.getRoot();
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(parent));
+                            stage.initStyle(StageStyle.UTILITY);
+                            stage.show();
+                        });
+
                         // Tạo icon Sửa
                         MFXFontIcon editIcon = new MFXFontIcon("fas-pen-to-square", 24);
                         editIcon.setStyle("-fx-cursor: hand;");
                         editIcon.setColor(Color.BLUE);
                         editIcon.setOnMouseClicked(event -> {
                             FXMLLoader loader = new FXMLLoader ();
-                            loader.setLocation(getClass().getResource("/fxml/EditDepartment.fxml"));
+                            loader.setLocation(getClass().getResource("/fxml/EditEmployee.fxml"));
                             try {
                                 loader.load();
                             } catch (IOException ex) {
@@ -129,37 +150,43 @@ public class DepartmentController implements Initializable {
                                     .get();
                             dialogContent.addActions(
                                     Map.entry(new MFXButton("Xác nhận"), e -> {
-                                        System.out.println("Xóa thiết bị: " + person.getName());
+                                        System.out.println("Xóa thiết bị: " + device.getName());
                                         dialog.close();
                                     }),
                                     Map.entry(new MFXButton("Hủy"), e -> dialog.close())
                             );
                             dialog.showDialog();
                         });
-                        actionBox.getChildren().addAll(editIcon, deleteIcon);
+                        actionBox.getChildren().addAll(viewIcon, editIcon, deleteIcon);
                         setGraphic(actionBox);
                     }
                 }
             };
         });
-        table.getTableColumns().addAll(nameColumn, surnameColumn, ageColumn,actionColumn);
-        table.getFilters().addAll(
-                new StringFilter<>("Name", Person::getName),
-                new StringFilter<>("Surname", Person::getSurname),
-                new IntegerFilter<>("Age", Person::getAge)
-        );
-        table.setItems(Model.people);
 
-        addDepartment();
+        // Thêm tất cả cột vào bảng
+        paginated.getTableColumns().addAll(idColumn, nameColumn, ipColumn, ownerColumn, stateColumn);
+        paginated.getFilters().addAll(
+                new IntegerFilter<>("ID", Device::getID),
+                new StringFilter<>("Name", Device::getName),
+                new StringFilter<>("IP", Device::getIP),
+                new StringFilter<>("Owner", Device::getOwner),
+                new EnumFilter<>("State", Device::getState, Device.State.class)
+        );
+
+        // Set danh sách thiết bị
+        paginated.setItems(Model.devices);
+        ScanQR();
+
     }
-    private void addDepartment() {
-        addDepartmentBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+    private void ScanQR() {
+        scanQrBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             FXMLLoader loader = new FXMLLoader ();
-            loader.setLocation(getClass().getResource("/fxml/AddDepartment.fxml"));
+            loader.setLocation(getClass().getResource("/fxml/ScanQR.fxml"));
             try {
                 loader.load();
             } catch (IOException ex) {
-                Logger.getLogger(AddDepartmentController.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AddEmployeeController.class.getName()).log(Level.SEVERE, null, ex);
             }
             Parent parent = loader.getRoot();
             Stage stage = new Stage();
@@ -170,3 +197,4 @@ public class DepartmentController implements Initializable {
     }
 
 }
+

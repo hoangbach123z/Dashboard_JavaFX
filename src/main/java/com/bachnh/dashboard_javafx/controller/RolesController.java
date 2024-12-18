@@ -1,4 +1,5 @@
 package com.bachnh.dashboard_javafx.controller;
+
 import com.bachnh.dashboard_javafx.model.Device;
 import com.bachnh.dashboard_javafx.model.Model;
 import io.github.palexdev.materialfx.controls.MFXButton;
@@ -14,33 +15,44 @@ import io.github.palexdev.materialfx.filter.IntegerFilter;
 import io.github.palexdev.materialfx.filter.StringFilter;
 import io.github.palexdev.materialfx.utils.others.observables.When;
 import io.github.palexdev.mfxresources.fonts.MFXFontIcon;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-
-public class TableViewsController implements Initializable {
+public class RolesController implements Initializable {
     @FXML
     private MFXPaginatedTableView<Device> paginated;
-    private MFXGenericDialog dialogContent;
-    private MFXStageDialog dialog;
+    @FXML
+    private GridPane gridPane;
+    @FXML
+    private MFXButton addRoleBtn;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupPaginated();
+
         paginated.autosizeColumnsOnInitialization();
         When.onChanged(paginated.currentPageProperty())
                 .then((oldValue, newValue) -> paginated.autosizeColumns())
                 .listen();
+
     }
     private void setupPaginated() {
         // Khởi tạo các cột bảng
@@ -59,75 +71,73 @@ public class TableViewsController implements Initializable {
         stateColumn.setRowCellFactory(device -> new MFXTableRowCell<>(Device::getState));
 
         // Thêm cột hành động
-        MFXTableColumn<Device> actionColumn = new MFXTableColumn<>("Actions", false);
+        MFXTableColumn<Device> actionColumn = new MFXTableColumn<>("", false);
         actionColumn.setRowCellFactory(device -> {
             return new MFXTableRowCell<>(device1 -> "") {
-                private final HBox actionBox;
-
-                {
-                    actionBox = new HBox(10);
-                    actionBox.setAlignment(Pos.CENTER);
-
-                    // Tạo icon Xem
-                    MFXFontIcon viewIcon = new MFXFontIcon("fas-eye", 24);
-                    viewIcon.setStyle("-fx-cursor: hand;");
-                    viewIcon.setColor(Color.FORESTGREEN);
-                    viewIcon.setOnMouseClicked(event -> {
-                        System.out.println("Xem chi tiết thiết bị: " + device.getName());
-                    });
-
-                    // Tạo icon Sửa
-                    MFXFontIcon editIcon = new MFXFontIcon("fas-pen-to-square", 24);
-                    editIcon.setStyle("-fx-cursor: hand;");
-                    editIcon.setColor(Color.BLUE);
-                    editIcon.setOnMouseClicked(event -> {
-                        System.out.println("Sửa thiết bị: " + device.getName());
-                    });
-
-                    // Tạo icon Xóa
-                    MFXFontIcon deleteIcon = new MFXFontIcon("fas-trash-can", 24);
-                    deleteIcon.setStyle("-fx-cursor: hand;");
-                    deleteIcon.setColor(Color.RED);
-                    deleteIcon.setOnMouseClicked(event -> {
-                        Stage stage = new Stage();
-                        MFXFontIcon infoIcon = new MFXFontIcon("fas-circle-info", 18);
-                        Platform.runLater(() -> {
-                            dialogContent = MFXGenericDialogBuilder.build()
-                                    .setHeaderIcon(infoIcon)
-                                    .setHeaderText("This is a generic info dialog")
-                                    .setContentText(Model.ipsum)
-                                    .makeScrollable(true)
-                                    .get();
-                            dialog = MFXGenericDialogBuilder.build(dialogContent)
-                                    .toStageDialogBuilder()
-                                    .initOwner(stage)
-                                    .initModality(Modality.APPLICATION_MODAL)
-                                    .setDraggable(true)
-                                    .setTitle("Dialogs Preview")
-                                    .setScrimPriority(ScrimPriority.WINDOW)
-                                    .setScrimOwner(true)
-                                    .get();
-
-                            dialogContent.addActions(
-                                    Map.entry(new MFXButton("Confirm"), e -> {
-                                    }),
-                                    Map.entry(new MFXButton("Cancel"), e -> dialog.close())
-                            );
-
-                            dialogContent.setMaxSize(400, 200);
-                            dialog.showDialog();
-                        });
-                    });
-                    actionBox.getChildren().addAll(viewIcon, editIcon, deleteIcon);
-                    setGraphic(actionBox);
-                }
-
+                private HBox actionBox;
                 @Override
                 public void update(Device item) {
                     super.update(item);
                     if (item == null) {
                         setGraphic(null);
-                    } else {
+                    }
+                    else
+                    {
+                        actionBox = new HBox(10);
+                        actionBox.setAlignment(Pos.CENTER);
+                        // Tạo icon Sửa
+                        MFXFontIcon editIcon = new MFXFontIcon("fas-pen-to-square", 24);
+                        editIcon.setStyle("-fx-cursor: hand;");
+                        editIcon.setColor(Color.BLUE);
+                        editIcon.setOnMouseClicked(event -> {
+                            FXMLLoader loader = new FXMLLoader ();
+                            loader.setLocation(getClass().getResource("/fxml/EditRole.fxml"));
+                            try {
+                                loader.load();
+                            } catch (IOException ex) {
+                                Logger.getLogger(EditRoleController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            Parent parent = loader.getRoot();
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(parent));
+                            stage.initStyle(StageStyle.UTILITY);
+                            stage.show();
+                        });
+
+                        // Tạo icon Xóa
+                        MFXFontIcon deleteIcon = new MFXFontIcon("fas-trash-can", 24);
+                        deleteIcon.setStyle("-fx-cursor: hand;");
+                        deleteIcon.setColor(Color.RED);
+                        deleteIcon.setOnMouseClicked(event -> {
+                            Stage currentStage = (Stage) gridPane.getScene().getWindow();
+                            MFXFontIcon warnIcon = new MFXFontIcon("fas-circle-exclamation", 18);
+                            warnIcon.setColor(Color.RED);
+                            MFXGenericDialog dialogContent = MFXGenericDialogBuilder.build()
+                                    .setContentText("Bạn có chắc chăn muốn xóa người dùng này")
+//                                    .makeScrollable(true)
+                                    .setHeaderIcon(warnIcon)
+                                    .setHeaderText("Xác nhận xóa")
+                                    .get();
+                            MFXStageDialog dialog = MFXGenericDialogBuilder.build(dialogContent)
+                                    .toStageDialogBuilder()
+                                    .initOwner(currentStage)
+                                    .initModality(Modality.APPLICATION_MODAL)
+                                    .setDraggable(true)
+//                                    .setTitle("Xác nhận xóa")
+                                    .setOwnerNode(gridPane)
+                                    .setScrimPriority(ScrimPriority.WINDOW)
+                                    .setScrimOwner(true)
+                                    .get();
+                            dialogContent.addActions(
+                                    Map.entry(new MFXButton("Xác nhận"), e -> {
+                                        System.out.println("Xóa thiết bị: " + device.getName());
+                                        dialog.close();
+                                    }),
+                                    Map.entry(new MFXButton("Hủy"), e -> dialog.close())
+                            );
+                            dialog.showDialog();
+                        });
+                        actionBox.getChildren().addAll(editIcon, deleteIcon);
                         setGraphic(actionBox);
                     }
                 }
@@ -146,7 +156,24 @@ public class TableViewsController implements Initializable {
 
         // Set danh sách thiết bị
         paginated.setItems(Model.devices);
+        addRole();
+
+    }
+    private void addRole() {
+        addRoleBtn.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            FXMLLoader loader = new FXMLLoader ();
+            loader.setLocation(getClass().getResource("/fxml/AddRole.fxml"));
+            try {
+                loader.load();
+            } catch (IOException ex) {
+                Logger.getLogger(AddEmployeeController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Parent parent = loader.getRoot();
+            Stage stage = new Stage();
+            stage.setScene(new Scene(parent));
+            stage.initStyle(StageStyle.UTILITY);
+            stage.show();
+        });
     }
 
 }
-
