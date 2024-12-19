@@ -75,6 +75,7 @@ public class DashboardJavaFxApplication extends Application {
 
         // Bọc bảng giữa bằng ScrollPane để tạo thanh cuộn ngang
         ScrollPane scrollPane = new ScrollPane(scrollableTable);
+        scrollPane.setStyle("-fx-background-color: WHITE;");
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true); // Không ép chiều rộng
         scrollPane.setMinWidth(600); // Đặt chiều rộng tối thiểu cho ScrollPane
@@ -95,13 +96,28 @@ public class DashboardJavaFxApplication extends Application {
 
         // Layout giao diện
         HBox tableContainer = new HBox(fixedFirstTable, scrollPane, fixedLastTable);
-        tableContainer.setSpacing(1); // Khoảng cách giữa các bảng
+        tableContainer.setSpacing(0); // Khoảng cách giữa các bảng
         tableContainer.setStyle("-fx-background-color: #f4f4f4;");
 
         Scene scene = new Scene(tableContainer, 1200, 400); // Kích thước ban đầu
         primaryStage.setScene(scene);
         primaryStage.setTitle("Fixed Columns TableView with Scrollable Middle");
         primaryStage.show();
+        primaryStage.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double totalColumnWidth = scrollableTable.getColumns().stream()
+                    .mapToDouble(TableColumn::getPrefWidth)
+                    .sum();
+
+            if (newWidth.doubleValue() > totalColumnWidth + 200) { // Nếu giao diện rộng hơn bảng
+                scrollableTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // Cột co giãn
+            } else {
+                scrollableTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY); // Giữ kích thước cố định
+            }
+
+            // Cập nhật chiều rộng tổng của bảng
+            scrollableTable.setPrefWidth(Math.max(totalColumnWidth, newWidth.doubleValue() - 200));
+        });
+
     }
 
     public static void main(String[] args) {
