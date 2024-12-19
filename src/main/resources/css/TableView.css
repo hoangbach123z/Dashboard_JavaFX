@@ -30,7 +30,8 @@
     -fx-font-size: 14px;
     -fx-padding: 5px;
     -fx-alignment: center;
-    -fx-border-width: 0;
+    -fx-border-width: 0.5 0.5 0.5 0.5;
+    -fx-border-color: #dee2e6;
 }
 
 /*!* First row customization (Rank 2 row) *!*/
@@ -41,7 +42,7 @@
 
 /* Row borders */
 .table-view .table-row-cell {
-    -fx-border-width: 1 1 1 1; /* Bottom border only */
+    -fx-border-width: 0.5 0.5 0.5 0.5; /* Bottom border only */
     -fx-border-color: #dee2e6; /* Light gray border */
     -fx-background-color: #ffffff;
 }
@@ -100,37 +101,5 @@
     -fx-pref-height: 10; /* Chiều cao thumb */
 }
 
-/* TableView Styling */
-/*.table-view {*/
-/*    -fx-background-color: #ffffff; !* Màu nền *!*/
-/*    -fx-border-color: #d0d0d0; !* Màu viền *!*/
-/*    -fx-border-width: 1; !* Độ dày viền *!*/
-/*    -fx-table-cell-border-color: #e0e0e0; !* Màu viền giữa các ô *!*/
-/*    -fx-padding: 5; !* Khoảng cách bên trong *!*/
-/*}*/
 
-/*.table-view .column-header {*/
-/*    -fx-background-color: #0078d7; !* Nền header *!*/
-/*    -fx-text-fill: white; !* Màu chữ header *!*/
-/*    -fx-font-weight: bold; !* Chữ in đậm *!*/
-/*    -fx-alignment: CENTER; !* Căn giữa chữ *!*/
-/*}*/
-
-/*.table-view .column-header-background {*/
-/*    -fx-background-color: #0078d7; !* Màu nền phía sau header *!*/
-/*}*/
-
-/*.table-row-cell {*/
-/*    -fx-background-color: #ffffff; !* Nền dòng *!*/
-/*    -fx-alignment: CENTER_LEFT; !* Căn lề trái *!*/
-/*}*/
-
-/*.table-row-cell:odd {*/
-/*    -fx-background-color: #f9f9f9; !* Màu xen kẽ *!*/
-/*}*/
-
-/*.table-row-cell:selected {*/
-/*    -fx-background-color: #72c3fc; !* Màu khi chọn *!*/
-/*    -fx-text-fill: white; !* Màu chữ khi chọn *!*/
-/*}*/
 
