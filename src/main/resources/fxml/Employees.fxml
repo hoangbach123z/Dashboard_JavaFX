@@ -23,6 +23,24 @@
       </HBox>
    </top>
    <center>
-      <TableView fx:id="paginated" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="623.0" prefWidth="1024.0" BorderPane.alignment="CENTER" />
+      <HBox fx:id="tableContainer" BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="fixedFirstTable" maxHeight="1.7976931348623157E308" maxWidth="60.0" minWidth="60.0" prefHeight="624.0" prefWidth="281.0" styleClass="column-header" stylesheets="@../css/TableView.css">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <TableView id="scrollableTable" fx:id="scrollableTable" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="624.0" prefWidth="920.0" HBox.hgrow="ALWAYS" styleClass="column-header" stylesheets="@../css/TableView.css">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <TableView id="fixedLastTable" fx:id="fixedLastTable" layoutX="291.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="60.0" minWidth="60.0" prefHeight="624.0" prefWidth="27.0" styleClass="column-header" stylesheets="@../css/TableView.css">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </HBox>
    </center>
 </BorderPane>

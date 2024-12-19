@@ -1,6 +1,7 @@
 package com.bachnh.dashboard_javafx.controller;
 
 import com.bachnh.dashboard_javafx.dto.EmployeeDT0;
+import com.bachnh.dashboard_javafx.utils.TableUtils;
 import io.github.palexdev.materialfx.controls.MFXButton;
 import io.github.palexdev.mfxresources.fonts.MFXFontIcon;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -30,23 +32,47 @@ import java.util.logging.Logger;
 
 public class EmployeesController implements Initializable {
     @FXML
-    private TableView<EmployeeDT0> paginated;
+    private TableView<EmployeeDT0> fixedFirstTable;
+    @FXML
+    private TableView<EmployeeDT0> scrollableTable;
+    @FXML
+    private TableView<EmployeeDT0> fixedLastTable;
+    @FXML
+    private HBox tableContainer;
     @FXML
     private BorderPane borderPane;
     @FXML
     private MFXButton addEmployeeBtn;
-//    @FXML ScrollPane scrollPane;
+
     private FXMLLoader loader ;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupPaginated();
-        paginated.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY );
-
     }
 
     private void setupPaginated() {
+        ObservableList<EmployeeDT0> data = FXCollections.observableArrayList(
+                new EmployeeDT0("1", "EMP001", "Nguyễn Văn A", "Nam", "01/01/1990", "0912345678", "123456789", "adsadsadsadsadsa@gmail.com", "Hà Nội", "Phòng IT", "Nhân viên", "Hoạt động", "01/01/2023", "02/01/2023"),
+                new EmployeeDT0("2", "EMP002", "Trần Thị B", "Nữ", "15/02/1992", "0918765432", "987654321", "bdsadsadsadsadsa@gmail.com", "Hồ Chí Minh", "Phòng HR", "Quản lý", "Hoạt động", "05/01/2023", "06/01/2023"),
+                new EmployeeDT0("3", "EMP003", "Lê Văn C", "Nam", "20/03/1985", "0987654321", "111222333", "cđasadsadsad@gmail.com", "Đà Nẵng", "Phòng Kế Toán", "Kế toán trưởng", "Hoạt động", "10/01/2023", "11/01/2023"),
+                new EmployeeDT0("4", "EMP004", "Phạm Thị D", "Nữ", "10/04/1995", "0971122334", "444555666", "ddsadsadsadsa@gmail.com", "Hải Phòng", "Phòng IT", "Nhân viên", "Nghỉ việc", "12/01/2023", "14/01/2023"),
+                new EmployeeDT0("5", "EMP005", "Ngô Văn E", "Nam", "05/05/1993", "0933344455", "777888999", "edsadsadsads@gmail.com", "Cần Thơ", "Phòng Sales", "Trưởng phòng", "Hoạt động", "15/01/2023", "16/01/2023"),
+                new EmployeeDT0("6", "EMP006", "Hoàng Thị F", "Nữ", "25/06/1991", "0956677889", "000111222", "fdsadsadsadsa@gmail.com", "Hà Nội", "Phòng Marketing", "Nhân viên", "Hoạt động", "17/01/2023", "18/01/2023"),
+                new EmployeeDT0("7", "EMP007", "Vũ Văn G", "Nam", "30/07/1988", "0911223344", "333222111", "gdsadsdsdsadsa@gmail.com", "Hồ Chí Minh", "Phòng IT", "Quản lý", "Hoạt động", "19/01/2023", "20/01/2023"),
+                new EmployeeDT0("8", "EMP008", "Đặng Thị H", "Nữ", "15/08/1994", "0944455566", "666555444", "hdsadsadsadsad@gmail.com", "Hải Dương", "Phòng HR", "Nhân viên", "Nghỉ việc", "21/01/2023", "22/01/2023"),
+                new EmployeeDT0("9", "EMP009", "Phan Văn I", "Nam", "12/09/1987", "0922233344", "999888777", "idsadsadsadsa@gmail.com", "Quảng Ninh", "Phòng Kỹ Thuật", "Trưởng phòng", "Hoạt động", "23/01/2023", "24/01/2023"),
+                new EmployeeDT0("10", "EMP010", "Lý Thị J", "Nữ", "01/10/1990", "0915566778", "123321456", "jdsadsdsadsa@gmail.com", "Vĩnh Phúc", "Phòng IT", "Nhân viên", "Hoạt động", "25/01/2023", "26/01/2023")
+        );
         // Khởi tạo các cột bảng
         TableColumn<EmployeeDT0, String> IDColumn = new TableColumn<>("ID");
+        IDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getID()));
+//        IDColumn.setPrefWidth(70);
+        fixedFirstTable.getColumns().add(IDColumn);
+        fixedFirstTable.setItems(data);
+        fixedFirstTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        TableUtils.disableSorting(fixedFirstTable);
+
+
         TableColumn<EmployeeDT0, String> employeeCodeColumn = new TableColumn<>("Mã Nhân viên");
         TableColumn<EmployeeDT0, String> fullnameColumn = new TableColumn<>("Họ và Tên");
         TableColumn<EmployeeDT0, String> genderColumn = new TableColumn<>("Giới tính");
@@ -61,7 +87,6 @@ public class EmployeesController implements Initializable {
         TableColumn<EmployeeDT0, String> createDateColumn = new TableColumn<>("Ngày tạo");
         TableColumn<EmployeeDT0, String> updateDateColumn = new TableColumn<>("Ngày cập nhật");
 
-        IDColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getID()));
         employeeCodeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getEmployeecode()));
         fullnameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFullname()));
         genderColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGender()));
@@ -77,7 +102,7 @@ public class EmployeesController implements Initializable {
         updateDateColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUpdateDate()));
 
         // Đặt kích thước tối thiểu cho các cột
-        IDColumn.setMinWidth(50);
+
         employeeCodeColumn.setMinWidth(150);
         fullnameColumn.setMinWidth(200);
         genderColumn.setMinWidth(100);
@@ -91,21 +116,12 @@ public class EmployeesController implements Initializable {
         statusColumn.setMinWidth(100);
         createDateColumn.setMinWidth(150);
         updateDateColumn.setMinWidth(150);
-
-
-
-        ObservableList<EmployeeDT0> data = FXCollections.observableArrayList(
-                new EmployeeDT0("1", "EMP001", "Nguyễn Văn A", "Nam", "01/01/1990", "0912345678", "123456789", "adsadsadsadsadsa@gmail.com", "Hà Nội", "Phòng IT", "Nhân viên", "Hoạt động", "01/01/2023", "02/01/2023"),
-                new EmployeeDT0("2", "EMP002", "Trần Thị B", "Nữ", "15/02/1992", "0918765432", "987654321", "bdsadsadsadsadsa@gmail.com", "Hồ Chí Minh", "Phòng HR", "Quản lý", "Hoạt động", "05/01/2023", "06/01/2023"),
-                new EmployeeDT0("3", "EMP003", "Lê Văn C", "Nam", "20/03/1985", "0987654321", "111222333", "cđasadsadsad@gmail.com", "Đà Nẵng", "Phòng Kế Toán", "Kế toán trưởng", "Hoạt động", "10/01/2023", "11/01/2023"),
-                new EmployeeDT0("4", "EMP004", "Phạm Thị D", "Nữ", "10/04/1995", "0971122334", "444555666", "ddsadsadsadsa@gmail.com", "Hải Phòng", "Phòng IT", "Nhân viên", "Nghỉ việc", "12/01/2023", "14/01/2023"),
-                new EmployeeDT0("5", "EMP005", "Ngô Văn E", "Nam", "05/05/1993", "0933344455", "777888999", "edsadsadsads@gmail.com", "Cần Thơ", "Phòng Sales", "Trưởng phòng", "Hoạt động", "15/01/2023", "16/01/2023"),
-                new EmployeeDT0("6", "EMP006", "Hoàng Thị F", "Nữ", "25/06/1991", "0956677889", "000111222", "fdsadsadsadsa@gmail.com", "Hà Nội", "Phòng Marketing", "Nhân viên", "Hoạt động", "17/01/2023", "18/01/2023"),
-                new EmployeeDT0("7", "EMP007", "Vũ Văn G", "Nam", "30/07/1988", "0911223344", "333222111", "gdsadsdsdsadsa@gmail.com", "Hồ Chí Minh", "Phòng IT", "Quản lý", "Hoạt động", "19/01/2023", "20/01/2023"),
-                new EmployeeDT0("8", "EMP008", "Đặng Thị H", "Nữ", "15/08/1994", "0944455566", "666555444", "hdsadsadsadsad@gmail.com", "Hải Dương", "Phòng HR", "Nhân viên", "Nghỉ việc", "21/01/2023", "22/01/2023"),
-                new EmployeeDT0("9", "EMP009", "Phan Văn I", "Nam", "12/09/1987", "0922233344", "999888777", "idsadsadsadsa@gmail.com", "Quảng Ninh", "Phòng Kỹ Thuật", "Trưởng phòng", "Hoạt động", "23/01/2023", "24/01/2023"),
-                new EmployeeDT0("10", "EMP010", "Lý Thị J", "Nữ", "01/10/1990", "0915566778", "123321456", "jdsadsdsadsa@gmail.com", "Vĩnh Phúc", "Phòng IT", "Nhân viên", "Hoạt động", "25/01/2023", "26/01/2023")
-        );
+        scrollableTable.getColumns().addAll(employeeCodeColumn,fullnameColumn,
+                genderColumn,birthdayColumn,mobileColumn,cardIdColumn,emailColumn,addressColumn,
+                departmentNameColumn,roleNameColumn,statusColumn,createDateColumn,updateDateColumn);
+        scrollableTable.setItems(data);
+        scrollableTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
+        TableUtils.disableSorting(scrollableTable);
 
         // Thêm cột hành động
         TableColumn<EmployeeDT0, Void> actionColumn = new TableColumn<>("Hành động");
@@ -124,7 +140,7 @@ public class EmployeesController implements Initializable {
                         } else {
                             actionBox.setAlignment(Pos.CENTER);
                             // Tạo icon Xem
-                            MFXFontIcon viewIcon = new MFXFontIcon("fas-eye", 20);
+                            MFXFontIcon viewIcon = new MFXFontIcon("fas-eye", 16);
                             viewIcon.setStyle("-fx-cursor: hand;");
                             viewIcon.setColor(Color.FORESTGREEN);
                             viewIcon.setOnMouseClicked(event -> {
@@ -143,7 +159,7 @@ public class EmployeesController implements Initializable {
                             });
 
                             // Tạo icon Sửa
-                            MFXFontIcon editIcon = new MFXFontIcon("fas-pen-to-square", 20);
+                            MFXFontIcon editIcon = new MFXFontIcon("fas-pen-to-square", 16);
                             editIcon.setStyle("-fx-cursor: hand;");
                             editIcon.setColor(Color.BLUE);
                             editIcon.setOnMouseClicked(event -> {
@@ -162,7 +178,7 @@ public class EmployeesController implements Initializable {
                             });
 
                             // Tạo icon Xóa
-                            MFXFontIcon deleteIcon = new MFXFontIcon("fas-trash-can", 20);
+                            MFXFontIcon deleteIcon = new MFXFontIcon("fas-trash-can", 16);
                             deleteIcon.setStyle("-fx-cursor: hand;");
                             deleteIcon.setColor(Color.RED);
                             deleteIcon.setOnMouseClicked(event -> {
@@ -188,18 +204,16 @@ public class EmployeesController implements Initializable {
                 return cell;
             }
         };
+
         actionColumn.setCellFactory(cellFactory);
-        actionColumn.setPrefWidth(120);
-        // Thêm tất cả cột vào bảng
-        paginated.getColumns().addAll(IDColumn, employeeCodeColumn, fullnameColumn,
-                genderColumn, birthdayColumn, mobileColumn, cardIdColumn, emailColumn,
-                addressColumn, departmentNameColumn, roleNameColumn,
-                statusColumn, createDateColumn, updateDateColumn, actionColumn);
+        fixedLastTable.setMinWidth(120);
+        fixedLastTable.setMaxWidth(120);
+        fixedLastTable.setItems(data);
+        fixedLastTable.getColumns().addAll(actionColumn);
+        fixedLastTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        TableUtils.disableSorting(fixedLastTable);
+        tableContainer.setSpacing(0);
 
-        // Set danh sách nhân viên
-        paginated.setItems(data);
-
-        addEmployee();
     }
 
     private void addEmployee() {

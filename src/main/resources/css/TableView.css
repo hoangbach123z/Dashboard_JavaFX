@@ -1,0 +1,136 @@
+/* Table container */
+.table-view {
+    -fx-background-color: #f8f9fa;
+    -fx-table-cell-border-color: transparent;
+    /*-fx-padding: 5;*/
+    -fx-font-family: Arial, sans-serif;
+    -fx-border-width: 0;
+    /*-fx-border-radius: 10;*/
+    /*-fx-border-insets: 5;*/
+}
+.table-view .column-header {
+    -fx-border-width: 0;
+
+}
+/* Header row styling */
+.table-view .column-header .label{
+    -fx-background-color: #0c969c; /* Green header background */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    /*-fx-label-padding: 15px;*/
+    -fx-border-color: #0a7075;
+    -fx-alignment: center;
+
+
+}
+
+/* Table cells styling */
+.table-view .table-cell {
+    -fx-font-size: 14px;
+    -fx-padding: 5px;
+    -fx-alignment: center;
+    -fx-border-width: 0;
+}
+
+/*!* First row customization (Rank 2 row) *!*/
+/*.table-view .table-row-cell:nth-child(2) .table-cell {*/
+/*    -fx-font-weight: bold;*/
+/*    -fx-text-fill: #2a9d8f; !* Green text for Sally *!*/
+/*}*/
+
+/* Row borders */
+.table-view .table-row-cell {
+    -fx-border-width: 1 1 1 1; /* Bottom border only */
+    -fx-border-color: #dee2e6; /* Light gray border */
+    -fx-background-color: #ffffff;
+}
+
+/*.table-view .table-row-cell:nth-child(odd) {*/
+/*    -fx-background-color: #f8f9fa; !* Alternate row color *!*/
+/*}*/
+
+/* Hover effect */
+.table-view .table-row-cell:hover {
+    -fx-background-color: #e9ecef; /* Light hover background */
+}
+
+/* Selected row styling */
+.table-view .table-row-cell:selected {
+    -fx-background-color: #cce5ff; /* Blue for selection */
+    -fx-text-fill: #212529;
+}
+/*.table-view .column-header .arrow {*/
+/*    -fx-shape: "";*/
+/*    -fx-background-insets: 0;*/
+/*    -fx-padding: 0;*/
+/*}*/
+
+/* ScrollPane Styling */
+.scroll-pane {
+    -fx-background-color: transparent; /* Nền của ScrollPane */
+    -fx-padding: 10; /* Khoảng cách bên trong */
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #ffffff; /* Màu nền của vùng nhìn thấy */
+}
+
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent; /* Nền thanh cuộn ngang */
+}
+
+/*.scroll-pane .scroll-bar:vertical {*/
+/*    -fx-background-color: transparent; !* Nền thanh cuộn dọc *!*/
+/*}*/
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-padding: 3.5; /* Loại bỏ padding của các nút cuộn */
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #e0e0e0; /* Nền của track (đường trượt) */
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: #0078d7; /* Màu của nút trượt */
+    -fx-background-radius: 5; /* Làm tròn góc của thumb */
+    -fx-pref-height: 10; /* Chiều cao thumb */
+}
+
+/* TableView Styling */
+/*.table-view {*/
+/*    -fx-background-color: #ffffff; !* Màu nền *!*/
+/*    -fx-border-color: #d0d0d0; !* Màu viền *!*/
+/*    -fx-border-width: 1; !* Độ dày viền *!*/
+/*    -fx-table-cell-border-color: #e0e0e0; !* Màu viền giữa các ô *!*/
+/*    -fx-padding: 5; !* Khoảng cách bên trong *!*/
+/*}*/
+
+/*.table-view .column-header {*/
+/*    -fx-background-color: #0078d7; !* Nền header *!*/
+/*    -fx-text-fill: white; !* Màu chữ header *!*/
+/*    -fx-font-weight: bold; !* Chữ in đậm *!*/
+/*    -fx-alignment: CENTER; !* Căn giữa chữ *!*/
+/*}*/
+
+/*.table-view .column-header-background {*/
+/*    -fx-background-color: #0078d7; !* Màu nền phía sau header *!*/
+/*}*/
+
+/*.table-row-cell {*/
+/*    -fx-background-color: #ffffff; !* Nền dòng *!*/
+/*    -fx-alignment: CENTER_LEFT; !* Căn lề trái *!*/
+/*}*/
+
+/*.table-row-cell:odd {*/
+/*    -fx-background-color: #f9f9f9; !* Màu xen kẽ *!*/
+/*}*/
+
+/*.table-row-cell:selected {*/
+/*    -fx-background-color: #72c3fc; !* Màu khi chọn *!*/
+/*    -fx-text-fill: white; !* Màu chữ khi chọn *!*/
+/*}*/
+
