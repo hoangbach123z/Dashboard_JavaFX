@@ -26,10 +26,13 @@
    <center>
       <HBox fx:id="tableContainer" style="-fx-background-color: #ffffff; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0); -fx-background-radius: 5px;">
          <children>
-            <TableView fx:id="fixedFirstTable" maxHeight="1.7976931348623157E308" maxWidth="210.0" minWidth="210.0" prefHeight="624.0" prefWidth="281.0" styleClass="column-header" stylesheets="@../css/TableView.css">
+            <TableView fx:id="fixedFirstTable" maxHeight="1.7976931348623157E308" maxWidth="210.0" minWidth="210.0" prefHeight="624.0" prefWidth="210.0" styleClass="column-header" stylesheets="@../css/TableView.css">
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
+               <HBox.margin>
+                  <Insets bottom="15.0" />
+               </HBox.margin>
             </TableView>
             <TableView id="scrollableTable" fx:id="scrollableTable" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="624.0" prefWidth="678.0" styleClass="column-header" stylesheets="@../css/TableView.css" HBox.hgrow="ALWAYS">
                <columnResizePolicy>
@@ -40,12 +43,15 @@
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
+               <HBox.margin>
+                  <Insets bottom="15.0" />
+               </HBox.margin>
             </TableView>
          </children>
       </HBox>
    </center>
    <bottom>
-      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1026.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="62.0" prefWidth="1026.0" BorderPane.alignment="CENTER">
          <children>
             <MFXPagination fx:id="paginator" stylesheets="@../css/Pagination.css" />
          </children>

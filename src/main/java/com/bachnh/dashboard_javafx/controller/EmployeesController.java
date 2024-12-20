@@ -54,15 +54,14 @@ public class EmployeesController implements Initializable {
     private ScrollPane scrollPane;
     private FXMLLoader loader ;
     private ObservableList<EmployeeDT0> masterData; // Danh sách dữ liệu gốc
-    private final int ROWS_PER_PAGE = 34;
+    private final int ROWS_PER_PAGE = 30;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeData();
         setupPaginated();
         Platform.runLater(() -> {
             syncScrollBars();
-            adjustPaddingForTables();
-//            syncRowHeights();
+            synchronizeTableSelection(fixedFirstTable,scrollableTable,fixedLastTable);
         });
     }
     private void initializeData() {
@@ -289,6 +288,13 @@ public class EmployeesController implements Initializable {
             fixedLastTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
             TableUtils.disableSorting(fixedLastTable);
         }
+        ScrollPane fixedFirstScrollPane = new ScrollPane(fixedFirstTable);
+        fixedFirstScrollPane.setFitToHeight(true);
+        fixedFirstScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS); // Hiển thị thanh cuộn ngang
+
+        ScrollPane fixedLastScrollPane = new ScrollPane(fixedLastTable);
+        fixedLastScrollPane.setFitToHeight(true);
+        fixedLastScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
         // Cập nhật dữ liệu
         fixedFirstTable.setItems(data);
@@ -321,26 +327,29 @@ public class EmployeesController implements Initializable {
         }
         return null;
     }
-    private ScrollBar getHorizontalScrollBar(TableView<?> tableView) {
-        for (Node node : tableView.lookupAll(".scroll-bar")) {
-            if (node instanceof ScrollBar) {
-                ScrollBar scrollBar = (ScrollBar) node;
-                if (scrollBar.getOrientation() == Orientation.HORIZONTAL) {
-                    return scrollBar;
-                }
+    private void synchronizeTableSelection(TableView<EmployeeDT0> fixedFirstTable, TableView<EmployeeDT0> scrollableTable, TableView<EmployeeDT0> fixedLastTable) {
+        // Listener cho fixedFirstTable
+        fixedFirstTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                scrollableTable.getSelectionModel().select(newValue);
+                fixedLastTable.getSelectionModel().select(newValue);
             }
-        }
-        return null;
-    }
+        });
 
-    private void adjustPaddingForTables() {
-        scrollableTable.skinProperty().addListener((obs, oldSkin, newSkin) -> {
-            Platform.runLater(() -> {
-                boolean hasHorizontalScrollBar = getHorizontalScrollBar(scrollableTable) != null;
-                Insets padding = hasHorizontalScrollBar ? new Insets(0, 0, 16, 0) : Insets.EMPTY;
-                fixedFirstTable.setPadding(padding);
-                fixedLastTable.setPadding(padding);
-            });
+        // Listener cho scrollableTable
+        scrollableTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fixedFirstTable.getSelectionModel().select(newValue);
+                fixedLastTable.getSelectionModel().select(newValue);
+            }
+        });
+
+        // Listener cho fixedLastTable
+        fixedLastTable.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                fixedFirstTable.getSelectionModel().select(newValue);
+                scrollableTable.getSelectionModel().select(newValue);
+            }
         });
     }
 

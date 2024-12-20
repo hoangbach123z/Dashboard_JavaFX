@@ -101,7 +101,7 @@
 
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
-    -fx-padding: 3.5; /* Loại bỏ padding của các nút cuộn */
+    -fx-padding: 5; /* Loại bỏ padding của các nút cuộn */
     -fx-background-color: #e6e5e5;
 }
 
