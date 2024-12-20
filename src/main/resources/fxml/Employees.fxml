@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import io.github.palexdev.materialfx.controls.MFXButton?>
+<?import io.github.palexdev.materialfx.controls.MFXPagination?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -23,19 +24,19 @@
       </HBox>
    </top>
    <center>
-      <HBox fx:id="tableContainer" BorderPane.alignment="CENTER">
+      <HBox fx:id="tableContainer" style="-fx-background-color: #ffffff; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5,0,0,0); -fx-background-radius: 5px;">
          <children>
-            <TableView fx:id="fixedFirstTable" maxHeight="1.7976931348623157E308" maxWidth="60.0" minWidth="60.0" prefHeight="624.0" prefWidth="281.0" styleClass="column-header" stylesheets="@../css/TableView.css">
+            <TableView fx:id="fixedFirstTable" maxHeight="1.7976931348623157E308" maxWidth="210.0" minWidth="210.0" prefHeight="624.0" prefWidth="281.0" styleClass="column-header" stylesheets="@../css/TableView.css">
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <TableView id="scrollableTable" fx:id="scrollableTable" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="624.0" prefWidth="920.0" HBox.hgrow="ALWAYS" styleClass="column-header" stylesheets="@../css/TableView.css">
+            <TableView id="scrollableTable" fx:id="scrollableTable" layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="624.0" prefWidth="678.0" styleClass="column-header" stylesheets="@../css/TableView.css" HBox.hgrow="ALWAYS">
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <TableView id="fixedLastTable" fx:id="fixedLastTable" layoutX="291.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="60.0" minWidth="60.0" prefHeight="624.0" prefWidth="27.0" styleClass="column-header" stylesheets="@../css/TableView.css">
+            <TableView id="fixedLastTable" fx:id="fixedLastTable" layoutX="291.0" layoutY="10.0" maxHeight="1.7976931348623157E308" maxWidth="120.0" minWidth="120.0" prefHeight="624.0" prefWidth="771.0" styleClass="column-header" stylesheets="@../css/TableView.css">
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
@@ -43,4 +44,11 @@
          </children>
       </HBox>
    </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="53.0" prefWidth="1026.0" BorderPane.alignment="CENTER">
+         <children>
+            <MFXPagination fx:id="paginator" stylesheets="@../css/Pagination.css" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
